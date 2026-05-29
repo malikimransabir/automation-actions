@@ -1,0 +1,17 @@
+name: 'Qbric Repo Scanner'
+description: 'Scan repository structure and validate files'
+
+inputs:
+  scan-path:
+    description: 'Path to scan'
+    required: false
+    default: '.'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run Qbric Scan
+      shell: bash
+      run: |
+        chmod +x ${{ github.action_path }}/scan.sh
+        ${{ github.action_path }}/scan.sh "${{ inputs.scan-path }}"

@@ -1,0 +1,20 @@
+name: QBric Scan Pipeline
+
+on:
+  pull_request:
+  push:
+
+jobs:
+  qbric-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run QBric Scan
+        uses: imransabir/qbric-scan@v1
+        with:
+          scan-path: .
+          enable-java: true
+          enable-node: true
+          enable-secrets: true
