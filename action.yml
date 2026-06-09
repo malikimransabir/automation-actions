@@ -1,13 +1,32 @@
-name: 'Qbric Repo Scanner'
-description: 'Scan a repository and report coverage / untested-flow results to qbric-api'
+name: 'Qbric Action'
+description: 'Qbric unified action — test-generation (pipeline-2) and repo scanner in one step'
 
 inputs:
+  # ── Test-generator inputs (pipeline-2 mode) ────────────────────────────────
+  mode:
+    description: 'Operation mode. "auto" detects the best strategy automatically.'
+    required: false
+    default: ''
+  framework:
+    description: 'Test framework hint. "auto-detect" lets Qbric choose.'
+    required: false
+    default: 'auto-detect'
+  dry-run:
+    description: 'When "true" the generator analyses the repo but writes no files.'
+    required: false
+    default: 'false'
+  pipeline-2:
+    description: 'Enable Qbric pipeline-2 (AI test generation). Set to "true" to activate.'
+    required: false
+    default: 'false'
+
+  # ── Scanner inputs ─────────────────────────────────────────────────────────
   scan-path:
     description: 'Path to scan'
     required: false
     default: '.'
   tenant-id:
-    description: 'qbric tenant id (numeric)'
+    description: 'Qbric tenant id (numeric)'
     required: false
     default: ''
   qbric-api-url:
@@ -34,6 +53,22 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    # ── Step 1: Test Generator (only when pipeline=true) ───────────────────
+    - name: Run Qbric Test Generator
+      if: ${{ inputs.pipeline == 'true' }}
+      shell: bash
+      env:
+        QBRIC_MODE: ${{ inputs.mode }}
+        QBRIC_FRAMEWORK: ${{ inputs.framework }}
+        QBRIC_DRY_RUN: ${{ inputs.dry-run }}
+        REPO_FULL_NAME: ${{ github.repository }}
+        REF_NAME: ${{ github.ref_name }}
+        COMMIT_SHA: ${{ github.sha }}
+      run: |
+        chmod +x "${{ github.action_path }}/scripts/test-generator.sh"
+        "${{ github.action_path }}/scripts/test-generator.sh" "${{ inputs.scan-path }}"
+
+    # ── Step 2: Scanner (always runs unless scan inputs are all empty) ────────
     - name: Run Qbric Scan
       shell: bash
       env:
