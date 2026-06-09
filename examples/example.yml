@@ -20,7 +20,7 @@ jobs:
           mode: auto
           framework: auto-detect
           dry-run: true
-          pipeline-2: true
+          pipeline: true
 
       - name: Run Qbric Scan
         uses: malikimransabir/qbric-action@v1

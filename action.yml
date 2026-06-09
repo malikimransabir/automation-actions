@@ -1,8 +1,8 @@
 name: 'Qbric Action'
-description: 'Qbric unified action — test-generation (pipeline-2) and repo scanner in one step'
+description: 'Qbric unified action — test-generation (pipeline) and repo scanner in one step'
 
 inputs:
-  # ── Test-generator inputs (pipeline-2 mode) ────────────────────────────────
+  # ── Test-generator inputs (pipeline mode) ────────────────────────────────
   mode:
     description: 'Operation mode. "auto" detects the best strategy automatically.'
     required: false
@@ -15,8 +15,8 @@ inputs:
     description: 'When "true" the generator analyses the repo but writes no files.'
     required: false
     default: 'false'
-  pipeline-2:
-    description: 'Enable Qbric pipeline-2 (AI test generation). Set to "true" to activate.'
+  pipeline:
+    description: 'Enable Qbric pipeline (AI test generation). Set to "true" to activate.'
     required: false
     default: 'false'
 

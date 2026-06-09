@@ -1,6 +1,6 @@
 #!/bin/bash
 # ---------------------------------------------------------------------------
-# Qbric Test Generator (pipeline-2)
+# Qbric Test Generator (pipeline)
 #
 # Analyses the repository structure to determine which test files are missing,
 # then reports the findings. When QBRIC_DRY_RUN=true no files are written.
